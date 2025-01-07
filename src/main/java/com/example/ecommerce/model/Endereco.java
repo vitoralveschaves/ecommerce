@@ -49,6 +49,7 @@ public class Endereco implements Serializable{
 	private Pessoa pessoa;
 	
 	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo_endereco")
 	private TipoEndereco tipoEndereco;
 
 	public Long getId() {
