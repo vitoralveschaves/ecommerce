@@ -70,7 +70,5 @@ public class Acesso implements GrantedAuthority {
 			return false;
 		return true;
 	}
-	
-	
 
 }
