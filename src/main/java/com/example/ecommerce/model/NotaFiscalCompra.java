@@ -29,25 +29,25 @@ public class NotaFiscalCompra implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_nota_fiscal_compra")
 	private Long id;
 	
-	@Column(name = "numero_nota")
+	@Column(name = "numero_nota", nullable = false)
 	private String numeroNota;
 	
-	@Column(name = "serie_nota")
+	@Column(name = "serie_nota", nullable = false)
 	private String serieNota;
 	
 	private String descricao;
 	
-	@Column(name = "valor_total")
+	@Column(name = "valor_total", nullable = false)
 	private BigDecimal valorTotal;
 	
 	@Column(name = "valor_desconto")
 	private BigDecimal valorDesconto;
 	
-	@Column(name = "valor_icms")
+	@Column(name = "valor_icms", nullable = false)
 	private BigDecimal valorIcms;
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name = "data_compra")
+	@Column(name = "data_compra", nullable = false)
 	private Date dataCompra;
 	
 	@ManyToOne(targetEntity = Pessoa.class)

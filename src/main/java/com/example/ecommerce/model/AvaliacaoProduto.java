@@ -2,6 +2,7 @@ package com.example.ecommerce.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -14,7 +15,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "avalicao_produto")
+@Table(name = "avaliacao_produto")
 @SequenceGenerator(name = "seq_avaliacao_produto", sequenceName = "seq_avaliacao_produto", allocationSize = 1, initialValue = 1)
 public class AvaliacaoProduto implements Serializable{
 
@@ -24,8 +25,10 @@ public class AvaliacaoProduto implements Serializable{
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_avaliacao_produto")
 	private Long id;
 	
+	@Column(nullable = false)
 	private String descricao;
 	
+	@Column(nullable = false)
 	private Integer nota;
 	
 	@ManyToOne(targetEntity = Pessoa.class)

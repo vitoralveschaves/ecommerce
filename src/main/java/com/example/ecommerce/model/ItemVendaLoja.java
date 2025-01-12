@@ -2,6 +2,7 @@ package com.example.ecommerce.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -32,6 +33,7 @@ public class ItemVendaLoja implements Serializable{
 	@JoinColumn(name = "venda_compra_loja_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "venda_compra_loja_fk"))
 	private VendaCompraLoja vendaCompraLoja;
 	
+	@Column(nullable = false)
 	private Double quantidade;
 
 	public Long getId() {
