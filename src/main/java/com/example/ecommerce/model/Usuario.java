@@ -46,7 +46,7 @@ public class Usuario implements UserDetails {
 	@Column(name = "data_atual_senha", nullable = false)
 	private Date dataAtualSenha;
 
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 			name = "usuarios_acesso",
 			uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "acesso_id"}, name = "unique_usuario_acesso"),
