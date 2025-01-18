@@ -1,7 +1,5 @@
 package com.example.ecommerce.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,8 +11,12 @@ import com.example.ecommerce.repository.UsuarioRepository;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService{
 	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private final UsuarioRepository usuarioRepository;
+
+	public UserDetailsServiceImpl(UsuarioRepository usuarioRepository) {
+		super();
+		this.usuarioRepository = usuarioRepository;
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -23,7 +25,6 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 		if(usuario == null) {
 			throw new UsernameNotFoundException("Usuário não encontrado.");
 		}
-		
-		return new User(usuario.getLogin(), usuario.getPassword(), usuario.getAuthorities());
+		return usuario;
 	}
 }

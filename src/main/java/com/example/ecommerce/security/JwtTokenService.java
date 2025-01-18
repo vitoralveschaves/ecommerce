@@ -1,5 +1,6 @@
 package com.example.ecommerce.security;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,10 @@ import com.example.ecommerce.ApplicationContextLoad;
 import com.example.ecommerce.model.Usuario;
 import com.example.ecommerce.repository.UsuarioRepository;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 
 @Service
 public class JwtTokenService {
@@ -24,7 +27,7 @@ public class JwtTokenService {
 	private static final String TOKEN_PREFIX = "Bearer";
 	private static final String HEADER_NAME = "Authorization";
 	
-	public void addAuthentication(HttpServletResponse response, String username) throws Exception{
+	public String addAuthentication(HttpServletResponse response, String username) throws Exception{
 		
 		String jwt = Jwts.builder()
 				.setSubject(username)
@@ -37,36 +40,59 @@ public class JwtTokenService {
 		response.addHeader(HEADER_NAME, token);
 		liberacaoCors(response);
 		
-		response.getWriter().write("{\"Authorization\": \"" + token + "\"}");
+		return token;
 	}
 	
-	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) {
-		String token = request.getHeader(HEADER_NAME);
-		
-		if(token != null) {
+	public String verifyToken(String token) {
+		try {
 			String tokenWithoutBearer = token.replace(TOKEN_PREFIX, "").trim();
-			
-			String usuarioToken = Jwts.parser()
+			return Jwts.parser()
 					.setSigningKey(SECRET)
 					.parseClaimsJws(tokenWithoutBearer)
 					.getBody()
 					.getSubject();
 			
-			if(usuarioToken != null) {
-				Usuario usuario = ApplicationContextLoad.getApplicationContext()
-						.getBean(UsuarioRepository.class)
-						.findUserByLogin(usuarioToken);
+		} catch (SignatureException e) {
+			return "";
+		}
+	}
+	
+	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String token = request.getHeader(HEADER_NAME);
+		
+		try {
+			
+			if(token != null) {
+				String tokenWithoutBearer = token.replace(TOKEN_PREFIX, "").trim();
 				
-				if(usuario != null) {
-					return new UsernamePasswordAuthenticationToken(
-							usuario.getLogin(),
-							usuario.getPassword(),
-							usuario.getAuthorities()
-					);
+				String usuarioToken = Jwts.parser()
+						.setSigningKey(SECRET)
+						.parseClaimsJws(tokenWithoutBearer)
+						.getBody()
+						.getSubject();
+				
+				if(usuarioToken != null) {
+					Usuario usuario = ApplicationContextLoad.getApplicationContext()
+							.getBean(UsuarioRepository.class)
+							.findUserByLogin(usuarioToken);
+					
+					if(usuario != null) {
+						return new UsernamePasswordAuthenticationToken(
+								usuario.getLogin(),
+								usuario.getPassword(),
+								usuario.getAuthorities()
+						);
+					}
 				}
 			}
+			
+		} catch (SignatureException e) {
+			response.getWriter().write("{\"Error\": \"Token Inválido\"}");
+		} catch(ExpiredJwtException e) {
+			response.getWriter().write("{\"Error\": \"Token expirado. Efetue o login novamente\"}");
+		} finally {
+			liberacaoCors(response);
 		}
-		liberacaoCors(response);
 		return null;
 	}
 	
