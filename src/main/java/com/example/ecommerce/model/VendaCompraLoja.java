@@ -73,6 +73,10 @@ public class VendaCompraLoja implements Serializable{
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_entrega", nullable = false)
 	private Date dataEntrega;
+	
+	@ManyToOne(targetEntity = Pessoa.class)
+	@JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
+	private Pessoa empresa;
 
 	public Long getId() {
 		return id;
@@ -176,6 +180,14 @@ public class VendaCompraLoja implements Serializable{
 
 	public void setDataEntrega(Date dataEntrega) {
 		this.dataEntrega = dataEntrega;
+	}
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Pessoa empresa) {
+		this.empresa = empresa;
 	}
 
 	@Override
