@@ -17,12 +17,14 @@ import com.example.ecommerce.service.AcessoService;
 @RestController
 public class AcessoController {
 	
-	@Autowired
-	private AcessoService acessoService;
+	private final AcessoService acessoService;
+	private final AcessoRepository acessoRepository;
 	
-	@Autowired
-	private AcessoRepository acessoRepository;
-	
+	public AcessoController(AcessoService acessoService, AcessoRepository acessoRepository) {
+		this.acessoService = acessoService;
+		this.acessoRepository = acessoRepository;
+	}
+
 	@PostMapping(value = "**/salvarAcesso")
 	public ResponseEntity<Acesso> salvarAcesso(@RequestBody Acesso acesso) {
 		Acesso acessoSalvo = acessoService.save(acesso);

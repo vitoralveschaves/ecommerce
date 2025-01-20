@@ -1,7 +1,6 @@
 package com.example.ecommerce.enums;
 
 public enum StatusContaReceber {
-	
 	COBRANCA("Cobrança"),
 	VENCIDA("Vencida"),
 	ABERTA("Aberta"),

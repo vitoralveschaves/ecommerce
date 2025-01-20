@@ -1,7 +1,6 @@
 package com.example.ecommerce.enums;
 
 public enum TipoEndereco {
-	
 	COBRANCA("Cobrança"),
 	ENTREGA("Entrega");
 	
