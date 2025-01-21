@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.example.ecommerce.ApplicationContextLoad;
+import com.example.ecommerce.exception.TokenInvalidoException;
 import com.example.ecommerce.model.Usuario;
 import com.example.ecommerce.repository.UsuarioRepository;
 
@@ -53,7 +54,7 @@ public class JwtTokenService {
 					.getSubject();
 			
 		} catch (SignatureException e) {
-			return "";
+			throw new TokenInvalidoException("Token expirado ou inválido");
 		}
 	}
 	

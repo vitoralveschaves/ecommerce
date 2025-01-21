@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.example.ecommerce.exception.TokenInvalidoException;
 import com.example.ecommerce.model.Usuario;
 import com.example.ecommerce.repository.UsuarioRepository;
 
@@ -29,17 +30,21 @@ public class SecurityFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
-		String token = request.getHeader("Authorization");
-		
-		if(token != null) {
-			String username = tokenService.verifyToken(token);
-			Usuario usuario = usuarioRepository.findUserByLogin(username);
+		try {
+			String token = request.getHeader("Authorization");
 			
-			UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
-			SecurityContextHolder.getContext().setAuthentication(auth);
+			if(token != null) {
+				String username = tokenService.verifyToken(token);
+				Usuario usuario = usuarioRepository.findUserByLogin(username);
+				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
+				SecurityContextHolder.getContext().setAuthentication(auth);
+			}
+			
+			filterChain.doFilter(request, response);
+		} catch (TokenInvalidoException e) {
+		    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+		    response.setCharacterEncoding("UTF-8");
+		    response.getWriter().write("{\"message\": \"" + e.getLocalizedMessage() + "\"}");
 		}
-		
-		filterChain.doFilter(request, response);
 	}
 }

@@ -19,23 +19,25 @@ import com.example.ecommerce.security.JwtTokenService;
 @RestController
 @RequestMapping(value = "/login")
 public class LoginController {
-	
+
 	private final AuthenticationManager authenticationManager;
 	private final JwtTokenService tokenService;
-	
+
 	public LoginController(AuthenticationManager authenticationManager, JwtTokenService tokenService) {
 		this.authenticationManager = authenticationManager;
 		this.tokenService = tokenService;
 	}
 
 	@PostMapping
-	public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto dto, HttpServletResponse response) throws Exception {
-		
-		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(dto.getLogin(), dto.getSenha());
+	public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto dto, HttpServletResponse response)
+			throws Exception {
+
+		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(dto.getLogin(),
+				dto.getSenha());
 		Authentication authentication = authenticationManager.authenticate(auth);
 		Usuario usuario = (Usuario) authentication.getPrincipal();
 		String token = tokenService.addAuthentication(response, usuario.getUsername());
-		
+
 		return ResponseEntity.ok(new LoginResponseDto(token));
 	}
 }

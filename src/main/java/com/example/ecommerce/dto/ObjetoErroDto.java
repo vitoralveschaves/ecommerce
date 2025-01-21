@@ -9,6 +9,14 @@ public class ObjetoErroDto implements Serializable {
 	private String error;
 	private String code;
 	
+	public ObjetoErroDto() {
+	}
+	
+	public ObjetoErroDto(String error, String code) {
+		this.error = error;
+		this.code = code;
+	}
+	
 	public String getError() {
 		return error;
 	}
