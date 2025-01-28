@@ -31,13 +31,11 @@ public class LoginController {
 	@PostMapping
 	public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto dto, HttpServletResponse response)
 			throws Exception {
-
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(dto.getLogin(),
 				dto.getSenha());
 		Authentication authentication = authenticationManager.authenticate(auth);
 		Usuario usuario = (Usuario) authentication.getPrincipal();
 		String token = tokenService.addAuthentication(response, usuario.getUsername());
-
 		return ResponseEntity.ok(new LoginResponseDto(token));
 	}
 }

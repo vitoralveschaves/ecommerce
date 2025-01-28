@@ -1,5 +1,7 @@
 package com.example.ecommerce.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,6 +13,7 @@ import com.example.ecommerce.model.Usuario;
 
 @Repository
 public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
+	
 	@Query("select u from Usuario u where u.login = ?1")
 	Usuario findUserByLogin(String login);
 
@@ -24,4 +27,7 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
 	@Modifying
 	@Query(nativeQuery = true, value = "insert into usuarios_acesso(usuario_id, acesso_id) values(?1, (select id from acesso where descricao = 'ROLE_USER'))")
 	void insereAcessoPj(Long idUser);
+	
+	@Query("select u from Usuario u where u.dataAtualSenha <= current_date - 90")
+	List<Usuario> usuarioSenhaAtualizar();
 }

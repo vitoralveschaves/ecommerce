@@ -43,7 +43,6 @@ public class AcessoController {
 	public ResponseEntity<Acesso> obterAcesso(@PathVariable Long id) {
 		Acesso acesso = acessoRepository.findById(id)
 				.orElseThrow(() -> new CustomException("Acesso não encontrado"));
-		
 		return new ResponseEntity<Acesso>(acesso, HttpStatus.OK);
 	}
 }
