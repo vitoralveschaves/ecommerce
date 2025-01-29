@@ -26,7 +26,7 @@ public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
 	@Transactional
 	@Modifying
 	@Query(nativeQuery = true, value = "insert into usuarios_acesso(usuario_id, acesso_id) values(?1, (select id from acesso where descricao = 'ROLE_USER'))")
-	void insereAcessoPj(Long idUser);
+	void insereAcessoUser(Long idUser);
 	
 	@Query("select u from Usuario u where u.dataAtualSenha <= current_date - 90")
 	List<Usuario> usuarioSenhaAtualizar();
