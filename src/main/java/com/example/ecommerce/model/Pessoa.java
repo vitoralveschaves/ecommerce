@@ -19,6 +19,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
@@ -30,12 +34,18 @@ public abstract class Pessoa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_pessoa")
 	private Long id;
 	
+	@Size(min = 3, message = "O nome deve ter no mínimo 3 caracteres")
+	@NotBlank(message = "Campo obrigatório")
+	@NotNull(message = "Campo obrigatório")
 	@Column(nullable = false)
 	private String nome;
 	
+	@Email
 	@Column(nullable = false)
 	private String email;
 	
+	@NotBlank(message = "Campo obrigatório")
+	@NotNull(message = "Campo obrigatório")
 	@Column(nullable = false)
 	private String telefone;
 	
@@ -46,6 +56,8 @@ public abstract class Pessoa implements Serializable {
 	@OneToMany(mappedBy = "pessoa", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Endereco> enderecos = new ArrayList<Endereco>();
 	
+	@NotBlank(message = "Campo obrigatório")
+	@NotNull(message = "Campo obrigatório")
 	@ManyToOne(targetEntity = Pessoa.class)
 	@JoinColumn(name = "empresa_id", nullable = true, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
 	private Pessoa empresa;

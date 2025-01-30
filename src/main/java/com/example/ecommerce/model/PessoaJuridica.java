@@ -4,6 +4,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.br.CNPJ;
 
 @Entity
 @Table(name = "pessoa_juridica")
@@ -12,18 +16,24 @@ public class PessoaJuridica extends Pessoa{
 
 	private static final long serialVersionUID = 1L;
 	
+	@CNPJ(message = "CNPJ inválido")
 	@Column(nullable = false)
 	private String cnpj;
 	
+	@NotBlank(message = "Campo obrigatório")
+	@NotNull(message = "Campo obrigatório")
 	@Column(name = "inscricao_estadual", nullable = false)
 	private String inscricaoEstadual;
 	
 	@Column(name = "inscricao_municipal")
 	private String inscricaoMunicipal;
 	
+	@NotBlank(message = "Campo obrigatório")
+	@NotNull(message = "Campo obrigatório")
 	@Column(name = "nome_fantasia", nullable = false)
 	private String nomeFantasia;
 	
+	@NotBlank(message = "Campo obrigatório")
 	@Column(name = "razao_social", nullable = false)
 	private String razaoSocial;
 	

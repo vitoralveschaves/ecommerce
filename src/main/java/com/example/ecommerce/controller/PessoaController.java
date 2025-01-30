@@ -1,5 +1,7 @@
 package com.example.ecommerce.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,18 +26,15 @@ public class PessoaController {
 	private final PessoaFisicaRepository pessoaFisicaRepository;
 	private final PessoaService pessoaService;
 	
-	public PessoaController(PessoaJuridicaRepository pessoaJuridicaRepository, PessoaService pessoaService, PessoaFisicaRepository pessoaFisicaRepository) {
+	public PessoaController(PessoaJuridicaRepository pessoaJuridicaRepository,
+			PessoaService pessoaService,PessoaFisicaRepository pessoaFisicaRepository) {
 		this.pessoaJuridicaRepository = pessoaJuridicaRepository;
 		this.pessoaFisicaRepository = pessoaFisicaRepository;
 		this.pessoaService = pessoaService;
 	}
 
 	@PostMapping(value = "/pessoa-juridica")
-	public ResponseEntity<PessoaJuridica> salvarPj(@RequestBody PessoaJuridica pessoaJuridica) {
-		
-		if(pessoaJuridica == null) {
-			throw new CustomException("Pessoa juridica não pode ser null");
-		}
+	public ResponseEntity<PessoaJuridica> salvarPj(@RequestBody @Valid PessoaJuridica pessoaJuridica) {
 		
 		if(pessoaJuridica.getId() == null && pessoaJuridicaRepository.existeCnpjCadastrado(pessoaJuridica.getCnpj()) != null) {
 			throw new CustomException("CNPJ inválido ou já cadastrado");
@@ -54,11 +53,7 @@ public class PessoaController {
 	}
 	
 	@PostMapping(value = "/pessoa-fisica")
-	public ResponseEntity<PessoaFisica> salvarPf(@RequestBody PessoaFisica pessoaFisica) {
-		
-		if(pessoaFisica == null) {
-			throw new CustomException("Pessoa Física não pode ser null");
-		}
+	public ResponseEntity<PessoaFisica> salvarPf(@RequestBody @Valid PessoaFisica pessoaFisica) {
 		
 		if(pessoaFisica.getId() == null && pessoaFisicaRepository.existeCpfCadastrado(pessoaFisica.getCpf()) != null) {
 			throw new CustomException("CPF inválido ou já cadastrado");
