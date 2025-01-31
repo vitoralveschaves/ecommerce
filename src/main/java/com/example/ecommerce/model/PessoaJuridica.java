@@ -16,6 +16,7 @@ public class PessoaJuridica extends Pessoa{
 
 	private static final long serialVersionUID = 1L;
 	
+	@NotBlank(message = "Campo obrigatório")
 	@CNPJ(message = "CNPJ inválido")
 	@Column(nullable = false)
 	private String cnpj;

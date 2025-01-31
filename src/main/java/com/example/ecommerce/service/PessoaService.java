@@ -5,7 +5,9 @@ import java.util.Calendar;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.example.ecommerce.dto.CepDto;
 import com.example.ecommerce.model.PessoaFisica;
 import com.example.ecommerce.model.PessoaJuridica;
 import com.example.ecommerce.model.Usuario;
@@ -25,7 +27,7 @@ public class PessoaService {
 
 	public PessoaService(PessoaJuridicaRepository pessoaJuridicaRepository, UsuarioRepository usuarioRepository,
 			JdbcTemplate jdbcTemplate, PasswordEncoder passwordEncoder,
-			EmailService emailService, PessoaFisicaRepository pessoaFisicaRepository) {
+			PessoaFisicaRepository pessoaFisicaRepository, EmailService emailService) {
 		this.pessoaJuridicaRepository = pessoaJuridicaRepository;
 		this.pessoaFisicaRepository = pessoaFisicaRepository;
 		this.usuarioRepository = usuarioRepository;
@@ -84,6 +86,7 @@ public class PessoaService {
 	}
 
 	public PessoaFisica salvarPf(PessoaFisica pessoaFisica) {
+		
 		for (int i = 0; i < pessoaFisica.getEnderecos().size(); i++) {
 			pessoaFisica.getEnderecos().get(i).setPessoa(pessoaFisica);
 		}
@@ -128,5 +131,10 @@ public class PessoaService {
 			}
 		}
 		return pessoaFisica;
+	}
+	
+	public CepDto consultarCep(String cep) {
+		RestTemplate restTemplate = new RestTemplate();
+		return restTemplate.getForEntity("https://viacep.com.br/ws/" + cep + "/json/", CepDto.class).getBody();
 	}
 }

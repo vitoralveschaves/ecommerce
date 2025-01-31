@@ -8,6 +8,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+
 import org.hibernate.validator.constraints.br.CPF;
 
 @Entity
@@ -17,6 +19,7 @@ public class PessoaFisica extends Pessoa{
 
 	private static final long serialVersionUID = 1L;
 	
+	@NotBlank(message = "Campo obrigatório")
 	@CPF(message = "CPF inválido")
 	@Column(nullable = false)
 	private String cpf;

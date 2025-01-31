@@ -6,9 +6,9 @@ public class ObjetoValidationDto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	public String campo;
+	private String campo;
 	
-	public String mesagem;
+	private String mesagem;
 
 	public ObjetoValidationDto(String campo, String mesagem) {
 		super();

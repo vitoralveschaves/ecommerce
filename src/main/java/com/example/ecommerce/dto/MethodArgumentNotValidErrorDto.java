@@ -4,12 +4,11 @@ import org.springframework.http.HttpStatus;
 
 public class MethodArgumentNotValidErrorDto {
 	
-	public HttpStatus status;
+	private HttpStatus status;
 	
-	List<ObjetoValidationDto> errors;
+	private List<ObjetoValidationDto> errors;
 
 	public MethodArgumentNotValidErrorDto(HttpStatus status, List<ObjetoValidationDto> errors) {
-		super();
 		this.status = status;
 		this.errors = errors;
 	}
